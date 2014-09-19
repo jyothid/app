@@ -17,6 +17,10 @@
 			@foreach ($deployments as $deployment)
 	  			<li class="list-group-item">
 					<div class="media">
+						<a href="{{ URL::to('account/'.$deployment->cloud_account_id.'/edit') }}" class="pull-left" href="#">
+						    <img class="media-object img-responsive" src="{{ asset('/assets/img/providers/'.Config::get('provider_meta.'.$deployment->cloudProvider.'.logo')) }}" alt="{{ $deployment->cloudProvider }}" />
+						    <p class="text-center">{{{$deployment->accountName}}}</p>
+						</a>
 						<form class="pull-right" method="post" action="{{ URL::to('deployment/' . $deployment->id . '/delete') }}">
 							<!-- CSRF Token -->
 							<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
@@ -27,7 +31,7 @@
 							
 							<h4 class="media-heading">{{ String::title($deployment->name) }}</h4>
 							<p>
-								<span class="glyphicon glyphicon-calendar"></span> <!--Sept 16th, 2012-->{{{ $deployment->created_at }}}
+								<span title="Created At"><span class="glyphicon glyphicon-calendar"></span> <!--Sept 16th, 2012-->{{{ $deployment->created_at }}}</span>
 							</p>
 						</div>
 					</div>

@@ -7,7 +7,7 @@
 * Classes list:
 * - CloudProvider
 */
-//require_once SHARED_ADDONPATH . 'libraries/aws/aws.phar';
+
 class CloudProvider {
     private static $aws;
     private static function AWSAuth($account) {
@@ -15,20 +15,24 @@ class CloudProvider {
         $config['key'] = $credentials->apiKey;
         $config['secret'] = $credentials->secretKey;
         $config['region'] = 'us-east-1';
-        self::$aws = Aws\Common\Aws::factory($config);
-        
-        $conStatus = FALSE;
-        try {
-            $ec2Compute = self::$aws->get('ec2');
-            $result = $ec2Compute->getRegions();
-            $conStatus = (!empty($result) && count($result) > 0);
+		$conStatus = FALSE;
+        try 
+        {
+            $ec2Client = \Aws\Ec2\Ec2Client::factory($config);
+
+			$result = $ec2Client->DescribeInstances(array(
+		        'Filters' => array(
+		                array('Name' => 'instance-type', 'Values' => array('m1.small')),
+		        )
+			));
+		
+			$reservations = $result->toArray();
+			if(isset($reservations['requestId'])) $conStatus = TRUE; else $conStatus = FALSE;
         }
         catch(Exception $ex) {
             $conStatus = FALSE;
             Log::error($ex);
-            //log_message('error', 'Connection failed with API and Secret .' . $ex->getMessage());
-            
-        }
+       }
         return $conStatus;
     }
     
