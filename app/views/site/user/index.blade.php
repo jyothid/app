@@ -27,7 +27,7 @@
         <div class="form-group {{{ $errors->has('username') ? 'error' : '' }}}">
             <label class="col-md-2 control-label" for="username">Username</label>
             <div class="col-md-10">
-                <input class="form-control" type="text" name="username" id="username" value="{{{ Input::old('username', $user->username) }}}" />
+                <input class="form-control" type="text" name="username" id="username" value="{{{ Input::old('username', $user->username) }}}" readonly/>
                 {{ $errors->first('username', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
@@ -68,7 +68,7 @@
     <!-- Form Actions -->
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">{{{ Lang::get('user/user.update') }}}</button>
         </div>
     </div>
     <!-- ./ form actions -->
